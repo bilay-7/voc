@@ -1,15 +1,19 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import Header from './components/Header';
-import HeroGrid from './components/HeroGrid';
-import LearningCycle from './components/LearningCycle';
-import Programs from './components/Programs';
-import YoungGardeners from './components/YoungGardeners';
-import AiWorkshop from './components/AiWorkshop';
-import TrafficPark from './components/TrafficPark';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Modal from './components/Modal';
-import { privacyNotice, trafficPark } from './data/content';
+import ScrollToTop from './components/ScrollToTop';
+import HomePage from './pages/HomePage';
+import AboutPage from './pages/AboutPage';
+import ProgramsPage from './pages/ProgramsPage';
+import YoungGardenersPage from './pages/YoungGardenersPage';
+import AiWorkshopPage from './pages/AiWorkshopPage';
+import TrafficParkPage from './pages/TrafficParkPage';
+import ContactPage from './pages/ContactPage';
+import AdminLoginPage from './pages/admin/AdminLoginPage';
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import { useContent } from './context/ContentContext';
 import { ProgramIcon } from './lib/icons';
 
 export default function App() {
@@ -17,30 +21,82 @@ export default function App() {
   const [trafficOpen, setTrafficOpen] = useState(false);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [preselectedProgram, setPreselectedProgram] = useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { trafficPark, privacyNotice } = useContent();
 
-  const scrollToContact = useCallback((programTitle = '') => {
+  const handleEnquireFromModal = (programTitle = '') => {
     setSelectedProgram(null);
     setTrafficOpen(false);
-    if (programTitle) setPreselectedProgram(programTitle);
-    requestAnimationFrame(() => {
-      document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }, []);
+    if (programTitle) {
+      setPreselectedProgram(programTitle);
+    }
+    navigate('/contact');
+  };
+
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  if (isAdminRoute) {
+    return (
+      <div className="min-h-screen bg-[#141213]">
+        <ScrollToTop />
+        <Routes>
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
+        </Routes>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#231F20]">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-hidden bg-white text-[#231F20] flex flex-col justify-between">
+      <ScrollToTop />
       <Header />
-      <main>
-        <HeroGrid />
-        <LearningCycle onOpenProgram={setSelectedProgram} />
-        <Programs onReadMore={setSelectedProgram} />
-        <YoungGardeners />
-        <AiWorkshop onEnquire={() => scrollToContact('AI & Digital Skills Workshop')} />
-        <TrafficPark onReadMore={() => setTrafficOpen(true)} />
-        <Contact
-          preselectedProgram={preselectedProgram}
-          onConsumedPreselect={() => setPreselectedProgram('')}
-        />
+      <div className="h-[68px] sm:h-[72px] shrink-0" aria-hidden="true" />
+      <main className="flex-1">
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage onOpenProgram={setSelectedProgram} />}
+          />
+          <Route
+            path="/about"
+            element={<HomePage onOpenProgram={setSelectedProgram} />}
+          />
+          <Route
+            path="/programs"
+            element={<ProgramsPage onReadMore={setSelectedProgram} />}
+          />
+          <Route
+            path="/young-gardeners"
+            element={<YoungGardenersPage />}
+          />
+          <Route
+            path="/ai-workshop"
+            element={
+              <AiWorkshopPage
+                onPreselectProgram={(prog) => setPreselectedProgram(prog)}
+              />
+            }
+          />
+          <Route
+            path="/traffic-park"
+            element={
+              <TrafficParkPage
+                onOpenProposal={() => setTrafficOpen(true)}
+              />
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <ContactPage
+                preselectedProgram={preselectedProgram}
+                onConsumedPreselect={() => setPreselectedProgram('')}
+              />
+            }
+          />
+        </Routes>
       </main>
       <Footer onOpenPrivacy={() => setPrivacyOpen(true)} />
 
@@ -53,7 +109,7 @@ export default function App() {
         {selectedProgram && (
           <div>
             <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-[2px] border border-gray-200 text-[#8E793E]">
-              <ProgramIcon name={selectedProgram.icon} className="h-6 w-6 stroke-[#8E793E]" />
+              <ProgramIcon name={selectedProgram.icon || selectedProgram.id} className="h-6 w-6 stroke-[#8E793E]" />
             </div>
             <p
               className="text-gray-700 text-[16px] font-light leading-relaxed"
@@ -64,7 +120,7 @@ export default function App() {
             <button
               type="button"
               className="btn-primary mt-6"
-              onClick={() => scrollToContact(selectedProgram.title)}
+              onClick={() => handleEnquireFromModal(selectedProgram.title)}
             >
               Send an enquiry
             </button>
@@ -91,7 +147,7 @@ export default function App() {
           style={{ fontFamily: "'Outfit', sans-serif" }}
         >
           <p>{trafficPark.summary}</p>
-          {trafficPark.fullContent.intro.map((p, idx) => (
+          {trafficPark.fullContent?.intro?.map((p, idx) => (
             <p key={idx}>{p}</p>
           ))}
         </div>
@@ -103,7 +159,7 @@ export default function App() {
           Objectives
         </h3>
         <ul className="mt-3 space-y-2.5">
-          {trafficPark.fullContent.objectives.map((item) => (
+          {trafficPark.fullContent?.objectives?.map((item) => (
             <li key={item.title} className="flex items-start gap-2.5">
               <span className="text-[#AD974F] text-[10px] mt-1 shrink-0 leading-none">◆</span>
               <p
@@ -124,7 +180,7 @@ export default function App() {
           Services and offerings
         </h3>
         <ul className="mt-3 space-y-2.5">
-          {trafficPark.fullContent.offerings.map((item) => (
+          {trafficPark.fullContent?.offerings?.map((item) => (
             <li key={item.title} className="flex items-start gap-2.5">
               <span className="text-[#AD974F] text-[10px] mt-1 shrink-0 leading-none">◆</span>
               <p
@@ -142,13 +198,13 @@ export default function App() {
           className="mt-6 text-gray-700 text-[15px] font-light leading-relaxed"
           style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-          {trafficPark.fullContent.conclusion}
+          {trafficPark.fullContent?.conclusion}
         </p>
 
         <button
           type="button"
           className="btn-primary mt-6"
-          onClick={() => scrollToContact('Traffic Path')}
+          onClick={() => handleEnquireFromModal('Traffic Path')}
         >
           Send an enquiry
         </button>
@@ -160,7 +216,7 @@ export default function App() {
           className="space-y-4 text-gray-700 text-[15px] font-light leading-relaxed"
           style={{ fontFamily: "'Outfit', sans-serif" }}
         >
-          {privacyNotice.paragraphs.map((p, idx) => (
+          {privacyNotice.paragraphs?.map((p, idx) => (
             <p key={idx}>{p}</p>
           ))}
         </div>

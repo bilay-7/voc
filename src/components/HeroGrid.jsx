@@ -1,11 +1,9 @@
 import React from 'react';
-import { mission, organizationStatement, vision } from '../data/content';
+import { Link } from 'react-router-dom';
+import { useContent } from '../context/ContentContext';
 
 export default function HeroGrid() {
-  const go = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
+  const { mission, organizationStatement, vision } = useContent();
   return (
     <section
       id="about"
@@ -105,20 +103,18 @@ export default function HeroGrid() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 pt-1">
-            <button
-              type="button"
-              onClick={() => go('programs')}
+            <Link
+              to="/programs"
               className="btn-primary w-full sm:w-auto"
             >
               Explore programs
-            </button>
-            <button
-              type="button"
-              onClick={() => go('contact')}
+            </Link>
+            <Link
+              to="/contact"
               className="btn-secondary w-full sm:w-auto"
             >
               Get in touch
-            </button>
+            </Link>
           </div>
         </div>
 

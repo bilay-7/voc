@@ -70,7 +70,7 @@ export const trafficPark = {
   tagline: 'A Traffic Educational Park for children and youth.',
   attribution: 'A social education project by Voice of Children.',
   comingSoon: true,
-  videoSrc: '/assets/voc.mp4',
+  videoSrc: '/assets/voc-slow.mp4',
   intro:
     'Miniature roads, traffic signals, pedestrian crossings and vehicles that simulate real-world traffic, so future drivers learn the rules from a young age.',
   bullets: [
@@ -166,10 +166,10 @@ export const privacyNotice = {
 };
 
 export const navItems = [
-  { label: 'About', href: '#about' },
-  { label: 'Programs', href: '#programs' },
-  { label: 'Young Gardeners', href: '#young-gardeners' },
-  { label: 'AI Workshop', href: '#ai-workshop' },
-  { label: 'Traffic Path', href: '#traffic-park' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'About', href: '/' },
+  { label: 'Programs', href: '/programs' },
+  { label: 'Young Gardeners', href: '/young-gardeners' },
+  { label: 'AI Workshop', href: '/ai-workshop' },
+  { label: 'Traffic Path', href: '/traffic-park' },
+  { label: 'Contact', href: '/contact' },
 ];

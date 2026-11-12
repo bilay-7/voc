@@ -1,49 +1,32 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
-import { navItems, site } from '../data/content';
+import { navItems } from '../data/content';
+import { useContent } from '../context/ContentContext';
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState('#about');
+  const location = useLocation();
+  const { site } = useContent();
 
-  useEffect(() => {
-    const ids = navItems.map((item) => item.href.slice(1));
-    const onScroll = () => {
-      const offset = 120;
-      let current = `#${ids[0]}`;
-      ids.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el && el.getBoundingClientRect().top <= offset) current = `#${id}`;
-      });
-      setActive(current);
-    };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const isCurrentActive = (href) => {
+    if (href === '/') {
+      return location.pathname === '/' || location.pathname === '/about';
+    }
+    return location.pathname === href;
+  };
 
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [open]);
-
-  const go = (href) => {
+  const closeMenu = () => {
     setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <header className="sticky top-0 z-50 h-[68px] sm:h-[72px] border-b border-[#AD974F]/30 bg-[#231F20] text-white">
-      <div className="mx-auto flex h-full max-w-[1360px] items-center justify-between px-4 sm:px-8 lg:px-12">
-        {/* Brand logo & name on left — uses the real uniform logo with arched text */}
-        <a
-          href="#about"
-          onClick={(e) => {
-            e.preventDefault();
-            go('#about');
-          }}
+    <header className="fixed top-0 inset-x-0 z-50 border-b border-[#AD974F]/30 bg-[#231F20]/95 backdrop-blur-md shadow-md text-white transition-all">
+      <div className="mx-auto flex h-[68px] sm:h-[72px] max-w-[1360px] items-center justify-between px-4 sm:px-8 lg:px-12">
+        {/* Brand logo & name on left */}
+        <Link
+          to="/"
+          onClick={closeMenu}
           className="flex items-center gap-2.5 sm:gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#AD974F]"
         >
           <img
@@ -60,7 +43,7 @@ export default function Header() {
           >
             {site.name}
           </span>
-        </a>
+        </Link>
 
         {/* Center navigation menu on desktop (>=980px) */}
         <nav
@@ -68,41 +51,31 @@ export default function Header() {
           aria-label="Primary"
         >
           {navItems.map((item) => {
-            const isActive = active === item.href;
+            const isActive = isCurrentActive(item.href);
             return (
-              <a
+              <Link
                 key={item.href}
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  go(item.href);
-                }}
+                to={item.href}
                 className={`transition-colors duration-200 hover:text-[#F5D36B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#AD974F] ${
                   isActive ? 'text-[#F5D36B]' : 'text-gray-300'
                 }`}
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
                 {item.label}
-              </a>
+              </Link>
             );
           })}
         </nav>
 
-        {/* Right action:
-            - Desktop (>=980px): Register button
-            - Mobile (<980px): ONLY the hamburger icon (NO external Register button, exactly matching reference Image 3)
-        */}
+        {/* Right action */}
         <div className="flex items-center">
-          <a
-            href="#young-gardeners"
-            onClick={(e) => {
-              e.preventDefault();
-              go('#young-gardeners');
-            }}
+          <Link
+            to="/young-gardeners"
+            onClick={closeMenu}
             className="btn-primary header-register-btn hidden min-[980px]:inline-flex !h-10 !px-5 text-[14px]"
           >
             Register
-          </a>
+          </Link>
 
           <button
             type="button"
@@ -125,35 +98,32 @@ export default function Header() {
       {open && (
         <div
           id="mobile-menu"
-          className="border-b border-[#AD974F]/40 bg-[#1A1718] px-6 py-5 space-y-3 text-gray-200 shadow-2xl min-[980px]:hidden"
+          className="border-b border-[#AD974F]/40 bg-[#1A1718] px-6 py-5 space-y-3 text-gray-200 shadow-2xl max-h-[calc(100vh-68px)] overflow-y-auto min-[980px]:hidden"
         >
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              onClick={(e) => {
-                e.preventDefault();
-                go(item.href);
-              }}
-              className={`block rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-[#231F20] hover:text-[#F5D36B] ${
-                active === item.href ? 'text-[#F5D36B]' : 'text-gray-200'
-              }`}
-              style={{ fontFamily: "'Outfit', sans-serif" }}
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const isActive = isCurrentActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                to={item.href}
+                onClick={closeMenu}
+                className={`block rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-[#231F20] hover:text-[#F5D36B] ${
+                  isActive ? 'text-[#F5D36B]' : 'text-gray-200'
+                }`}
+                style={{ fontFamily: "'Outfit', sans-serif" }}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
           <div className="pt-2">
-            <a
-              href="#young-gardeners"
-              onClick={(e) => {
-                e.preventDefault();
-                go('#young-gardeners');
-              }}
+            <Link
+              to="/young-gardeners"
+              onClick={closeMenu}
               className="btn-primary block w-full text-center"
             >
               Register
-            </a>
+            </Link>
           </div>
         </div>
       )}

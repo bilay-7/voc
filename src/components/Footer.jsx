@@ -1,8 +1,10 @@
 import React from 'react';
-import { site } from '../data/content';
+import { Link } from 'react-router-dom';
+import { useContent } from '../context/ContentContext';
 import { InstagramIcon, FacebookIcon } from '../lib/icons';
 
 export default function Footer({ onOpenPrivacy }) {
+  const { site } = useContent();
   return (
     <footer className="border-t border-[#AD974F]/30 bg-[#1A1718] text-white">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-16">
@@ -10,7 +12,7 @@ export default function Footer({ onOpenPrivacy }) {
           
           {/* Brand Info */}
           <div className="md:col-span-5 lg:col-span-5">
-            <div className="flex items-center gap-3">
+            <Link to="/" className="inline-flex items-center gap-3">
               <img
                 src="/assets/logo.png"
                 alt="Voice of Children"
@@ -24,7 +26,7 @@ export default function Footer({ onOpenPrivacy }) {
               >
                 {site.name}
               </p>
-            </div>
+            </Link>
             <p
               className="mt-4 max-w-sm text-[14.5px] sm:text-[15px] font-light leading-relaxed text-gray-300"
               style={{ fontFamily: "'Outfit', sans-serif" }}
@@ -126,9 +128,19 @@ export default function Footer({ onOpenPrivacy }) {
           <p style={{ fontFamily: "'Outfit', sans-serif" }}>
             © {new Date().getFullYear()} Voice of Children. All rights reserved.
           </p>
-          <p style={{ fontFamily: "'Outfit', sans-serif" }} className="text-gray-500 text-xs">
-            Objective-based STEM &amp; Life Skills Education
-          </p>
+          <div className="flex items-center gap-4 text-xs">
+            <p style={{ fontFamily: "'Outfit', sans-serif" }} className="text-gray-500">
+              Objective-based STEM &amp; Life Skills Education
+            </p>
+            <span className="text-gray-700">|</span>
+            <Link
+              to="/admin"
+              className="text-gray-500 hover:text-[#AD974F] transition-colors"
+              style={{ fontFamily: "'Outfit', sans-serif" }}
+            >
+              Admin Portal
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

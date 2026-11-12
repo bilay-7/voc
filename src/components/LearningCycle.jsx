@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { learningCycle } from '../data/content';
-import { getProgramById } from '../data/programs';
+import { useContent } from '../context/ContentContext';
 
 const cycleSteps = [
   {
@@ -8,7 +7,7 @@ const cycleSteps = [
     programId: 'gardening',
     title: 'Gardening',
     description: 'The Green Glow Club: organic gardening and biodiversity within a STEM framework.',
-    positionClass: 'lg:absolute lg:bottom-0 lg:left-1/2 lg:-translate-x-1/2',
+    positionClass: 'lg:absolute lg:top-8 lg:left-6',
   },
   {
     stepNumber: 2,
@@ -22,11 +21,12 @@ const cycleSteps = [
     programId: 'first-aid',
     title: 'First Aid',
     description: 'Hands-on first aid training supervised by experienced medical staff and nurses.',
-    positionClass: 'lg:absolute lg:top-8 lg:left-6',
+    positionClass: 'lg:absolute lg:bottom-0 lg:left-1/2 lg:-translate-x-1/2',
   },
 ];
 
 export default function LearningCycle({ onOpenProgram }) {
+  const { learningCycle, programs } = useContent();
   const [activeStep, setActiveStep] = useState(1);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -47,11 +47,20 @@ export default function LearningCycle({ onOpenProgram }) {
   }, [reducedMotion]);
 
   const handleCardClick = (programId) => {
-    const program = getProgramById(programId);
+    const program = programs.find((p) => p.id === programId);
     if (program) {
       onOpenProgram(program);
     }
   };
+
+  const resolvedSteps = cycleSteps.map((step) => {
+    const found = programs.find((p) => p.id === step.programId);
+    return {
+      ...step,
+      title: found?.title || step.title,
+      description: found?.summary || step.description,
+    };
+  });
 
   return (
     <section
@@ -93,39 +102,39 @@ export default function LearningCycle({ onOpenProgram }) {
                 <marker
                   id="gold-arrowhead"
                   viewBox="0 0 10 10"
-                  refX="6"
+                  refX="8"
                   refY="5"
-                  markerWidth="7"
-                  markerHeight="7"
+                  markerWidth="8"
+                  markerHeight="8"
                   orient="auto"
                 >
                   <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#AD974F" />
                 </marker>
               </defs>
 
-              {/* Arrow 1: Gardening (1) -> Self-Defense (2) (bottom-right curving up) */}
+              {/* Arrow 1: Gardening (1, Upper-Left) -> Self-Defense (2, Upper-Right) */}
               <path
-                d="M 545 460 C 660 440, 715 340, 665 200"
+                d="M 270 100 C 365 40, 485 40, 574 100"
                 stroke="#AD974F"
-                strokeWidth="1.35"
+                strokeWidth="1.5"
                 fill="none"
                 markerEnd="url(#gold-arrowhead)"
               />
 
-              {/* Arrow 2: Self-Defense (2) -> First Aid (3) (arching gracefully OVER the top) */}
+              {/* Arrow 2: Self-Defense (2, Upper-Right) -> First Aid (3, Bottom) */}
               <path
-                d="M 580 80 C 490 15, 360 15, 270 80"
+                d="M 690 220 C 725 325, 665 415, 554 445"
                 stroke="#AD974F"
-                strokeWidth="1.35"
+                strokeWidth="1.5"
                 fill="none"
                 markerEnd="url(#gold-arrowhead)"
               />
 
-              {/* Arrow 3: First Aid (3) -> Gardening (1) (bottom-left curving down) */}
+              {/* Arrow 3: First Aid (3, Bottom) -> Gardening (1, Upper-Left) */}
               <path
-                d="M 185 200 C 135 340, 190 440, 305 460"
+                d="M 296 445 C 185 415, 125 325, 144 224"
                 stroke="#AD974F"
-                strokeWidth="1.35"
+                strokeWidth="1.5"
                 fill="none"
                 markerEnd="url(#gold-arrowhead)"
               />
@@ -146,7 +155,7 @@ export default function LearningCycle({ onOpenProgram }) {
           </div>
 
           {/* Cards: Exact layout matching Reference Image 1 (NO "Read more", pure cards) */}
-          {cycleSteps.map((step) => {
+          {resolvedSteps.map((step) => {
             const isActive = activeStep === step.stepNumber;
             return (
               <div
@@ -160,11 +169,11 @@ export default function LearningCycle({ onOpenProgram }) {
                     handleCardClick(step.programId);
                   }
                 }}
-                className={`w-full max-w-[320px] sm:max-w-[340px] sm:w-[240px] bg-white rounded-[2px] p-6 cursor-pointer transition-all duration-300 z-20 group text-left ${
+                className={`w-full max-w-[320px] sm:max-w-[340px] sm:w-[240px] bg-white rounded-[2px] p-6 cursor-pointer transition-[border-color,box-shadow] duration-300 z-20 group text-left ${
                   step.positionClass
                 } ${
                   isActive
-                    ? 'border border-[#AD974F] shadow-[0_12px_28px_rgba(173,151,79,0.18)] scale-[1.01]'
+                    ? 'border border-[#AD974F] shadow-[0_12px_28px_rgba(173,151,79,0.22)]'
                     : 'border border-gray-200/90 shadow-sm hover:border-[#AD974F]/50'
                 }`}
               >

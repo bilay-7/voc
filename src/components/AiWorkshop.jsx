@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { aiWorkshop } from '../data/aiWorkshop';
+import { useContent } from '../context/ContentContext';
 
 export default function AiWorkshop({ onEnquire }) {
-  const [activeId, setActiveId] = useState(aiWorkshop.modules[0].id);
+  const { aiWorkshop } = useContent();
+  const [activeId, setActiveId] = useState(aiWorkshop.modules[0]?.id || 'intro-ai');
   const active = aiWorkshop.modules.find((m) => m.id === activeId) || aiWorkshop.modules[0];
 
   const move = (delta) => {
@@ -12,9 +13,9 @@ export default function AiWorkshop({ onEnquire }) {
   };
 
   return (
-    <section id="ai-workshop" className="bg-[#231F20] text-white py-16 sm:py-24 overflow-hidden">
+    <section id="ai-workshop" className="bg-[#231F20] text-white pt-3 sm:pt-4 lg:pt-5 pb-16 sm:pb-24 overflow-hidden">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-10 max-w-3xl sm:mb-14">
+        <div className="mb-6 max-w-3xl sm:mb-8">
           <h2
             className="text-[32px] sm:text-[40px] lg:text-[48px] text-white font-normal tracking-tight"
             style={{

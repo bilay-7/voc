@@ -1,5 +1,5 @@
 import React from 'react';
-import { site, youngGardeners } from '../data/content';
+import { useContent } from '../context/ContentContext';
 
 /**
  * Mobile botanical plant illustration matching design reference mockup.
@@ -87,15 +87,17 @@ function CircleBadge({ className = '', textClassName = '' }) {
 }
 
 export default function YoungGardeners() {
-  const learningTopicsLeft = youngGardeners.topics.slice(0, 4);
-  const learningTopicsRight = youngGardeners.topics.slice(4);
+  const { site, youngGardeners } = useContent();
+  const half = Math.ceil(youngGardeners.topics.length / 2);
+  const learningTopicsLeft = youngGardeners.topics.slice(0, half);
+  const learningTopicsRight = youngGardeners.topics.slice(half);
 
   return (
     <section
       id="young-gardeners"
       className="bg-[#FFFFFF] text-[#231F20] w-full max-w-full overflow-x-hidden"
     >
-      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-20 box-border">
+      <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4 lg:pt-5 pb-12 sm:pb-16 lg:pb-20 box-border">
         <div className="grid grid-cols-1 lg:grid-cols-12 w-full max-w-full border border-[#E5E5E5] rounded-[2px] overflow-hidden box-border">
           {/* MOBILE — pixel-matched to reference image-bab6058f
               panel 346×273 · circle ⌀102 @ (170,92) · no ground line */}
@@ -162,7 +164,7 @@ export default function YoungGardeners() {
                     className="text-[17px] sm:text-[20px] lg:text-[22px] text-[#231F20] leading-tight"
                     style={{ fontFamily: "'Bodoni Moda', Georgia, serif", fontWeight: 500 }}
                   >
-                    5–11 &amp; 12–16
+                    {youngGardeners.ageGroups}
                   </div>
                   <div
                     className="text-[11px] sm:text-[12px] text-[#231F20]/50 mt-1"
@@ -176,7 +178,7 @@ export default function YoungGardeners() {
                     className="text-[17px] sm:text-[20px] lg:text-[22px] text-[#231F20] leading-tight"
                     style={{ fontFamily: "'Bodoni Moda', Georgia, serif", fontWeight: 500 }}
                   >
-                    4 weeks
+                    {youngGardeners.duration}
                   </div>
                   <div
                     className="text-[11px] sm:text-[12px] text-[#231F20]/50 mt-1"
@@ -190,13 +192,13 @@ export default function YoungGardeners() {
                     className="text-[17px] sm:text-[20px] lg:text-[22px] text-[#231F20] leading-tight"
                     style={{ fontFamily: "'Bodoni Moda', Georgia, serif", fontWeight: 500 }}
                   >
-                    Rs 20,000
+                    {youngGardeners.fee}
                   </div>
                   <div
                     className="text-[11px] sm:text-[12px] text-[#231F20]/50 mt-1"
                     style={{ fontFamily: "'Outfit', sans-serif" }}
                   >
-                    Per person
+                    {youngGardeners.feeSubtitle}
                   </div>
                 </div>
               </div>

@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { programs } from '../data/programs';
-import { site } from '../data/content';
+import { useContent } from '../context/ContentContext';
 import { isSupabaseConfigured, submitEnquiry } from '../lib/supabase';
 
 const workshopOptions = [
   'Young Gardeners Boot Camp',
   'AI & Digital Skills Workshop',
   'Traffic Path',
-];
-
-const programOptions = [
-  ...programs.map((p) => p.title),
-  ...workshopOptions,
 ];
 
 const initialForm = {
@@ -24,11 +18,17 @@ const initialForm = {
 };
 
 export default function Contact({ preselectedProgram = '', onConsumedPreselect }) {
+  const { site, programs, addEnquiry } = useContent();
   const [form, setForm] = useState(initialForm);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
+
+  const programOptions = [
+    ...programs.map((p) => p.title),
+    ...workshopOptions,
+  ];
 
   useEffect(() => {
     if (!preselectedProgram) return;
@@ -42,7 +42,9 @@ export default function Contact({ preselectedProgram = '', onConsumedPreselect }
     if (!form.phone.trim()) next.phone = 'Phone number is required.';
     if (!form.child_age || Number(form.child_age) < 1) next.child_age = "Child's age is required.";
     if (!form.program) next.program = 'Please select a program.';
-    if (form.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    if (!form.email.trim()) {
+      next.email = 'Email address is required.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       next.email = 'Enter a valid email address.';
     }
     setErrors(next);
@@ -67,14 +69,17 @@ export default function Contact({ preselectedProgram = '', onConsumedPreselect }
       const payload = {
         parent_name: form.parent_name.trim(),
         phone: form.phone.trim(),
-        email: form.email.trim() || null,
+        email: form.email.trim(),
         child_age: Number(form.child_age),
         program: form.program,
         message: form.message.trim() || null,
       };
 
+      // Save enquiry locally for Admin Dashboard
+      addEnquiry(payload);
+
       if (!isSupabaseConfigured) {
-        console.info('Enquiry payload (Supabase pending):', payload);
+        console.info('Enquiry saved to local admin inbox (Supabase pending):', payload);
         setSuccess(true);
         setForm(initialForm);
         return;
@@ -92,7 +97,7 @@ export default function Contact({ preselectedProgram = '', onConsumedPreselect }
   };
 
   return (
-    <section id="contact" className="bg-[#FFFFFF] text-[#231F20] py-16 sm:py-24">
+    <section id="contact" className="bg-[#FFFFFF] text-[#231F20] pt-3 sm:pt-4 lg:pt-5 pb-16 sm:pb-24">
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/*
@@ -103,7 +108,7 @@ export default function Contact({ preselectedProgram = '', onConsumedPreselect }
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
           {/* Left Column: Direct on white background */}
-          <div className="lg:col-span-5 space-y-6 pt-2">
+          <div className="lg:col-span-5 space-y-6">
             <div>
               <span
                 className="text-[#8E793E] text-[12px] font-medium tracking-[0.16em] uppercase block mb-3"
@@ -266,12 +271,13 @@ export default function Contact({ preselectedProgram = '', onConsumedPreselect }
                     className="block text-[13px] font-medium text-[#231F20] mb-1.5"
                     style={{ fontFamily: "'Outfit', sans-serif" }}
                   >
-                    Email <span className="text-gray-500 font-light text-xs">(optional)</span>
+                    Email <span className="text-[#8E793E]">*</span>
                   </label>
                   <input
                     id="email"
                     name="email"
                     type="email"
+                    required
                     placeholder="name@example.com"
                     value={form.email}
                     onChange={handleChange}

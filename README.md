@@ -41,7 +41,7 @@ VOC-WEB/
 │   ├── assets/
 │   │   ├── logo.png            # Official arched Voice of Children brand logo
 │   │   ├── logo-emblem.png     # Emblem icon
-│   │   ├── voc.mp4             # Web-optimized H.264 video for Traffic Path
+│   │   ├── voc-slow.mp4        # Web-optimized smooth 0.65x H.264 video for Traffic Path
 │   │   └── traffic-poster.jpg  # Video fallback poster frame
 │   ├── favicon.svg             # Gold brand favicon
 │   ├── og-image.svg            # Open Graph social sharing banner
@@ -159,7 +159,7 @@ To maintain strict compliance with Section 13, all website content is decoupled 
 All intentional adaptations are documented below:
 1. **Logo Asset:** Extracted and vectorized high-resolution PNGs (`logo.png` and `logo-emblem.png`) from the client's provided image pack to ensure crisp rendering on retina displays until the client delivers an official `.svg` file.
 2. **Pedal & Path Rename:** Renamed to **Traffic Path** per team lead instruction; anchor link alias `#traffic-path` is maintained alongside `#traffic-park` for backward compatibility.
-3. **Video Codec Optimization:** Converted original Apple ProRes `.mov` to universal web-standard **H.264 MP4** (`voc.mp4`) with a custom fallback poster to ensure instant autoplay across all modern mobile and desktop browsers (Chromium, Safari, Edge, Firefox).
+3. **Video Codec Optimization:** Converted original video into smooth web-standard **H.264 MP4** (`voc-slow.mp4`) with hardware 0.65x slow-motion timing baked in to ensure zero frame-stutter and instant autoplay across all modern mobile and desktop browsers (Chromium, Safari, Edge, Firefox).
 4. **Temporary Privacy Copy:** Sensible draft legal privacy notice implemented in `content.js` pending client approval as designated under Section 12.2.
 
 ---
