@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useContent } from '../context/ContentContext';
 
 const cycleSteps = [
@@ -25,10 +25,21 @@ const cycleSteps = [
   },
 ];
 
+// Connecting arrows (paths unchanged): 1 -> 2, 2 -> 3, 3 -> 1
+const cycleArrows = [
+  { from: 1, d: 'M 270 100 C 365 40, 485 40, 574 100' },
+  { from: 2, d: 'M 690 220 C 725 325, 665 415, 554 445' },
+  { from: 3, d: 'M 296 445 C 185 415, 125 325, 144 224' },
+];
+
 export default function LearningCycle({ onOpenProgram }) {
   const { learningCycle, programs } = useContent();
   const [activeStep, setActiveStep] = useState(1);
   const [reducedMotion, setReducedMotion] = useState(false);
+  // Arrows already drawn: each one animates once and then stays in place
+  const [drawnArrows, setDrawnArrows] = useState([]);
+  const sectionRef = useRef(null);
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -38,13 +49,44 @@ export default function LearningCycle({ onOpenProgram }) {
     return () => media.removeEventListener('change', update);
   }, []);
 
+  // Track whether the section is on screen
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.4 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Every time the section comes into view the cycle restarts from step 1
   useEffect(() => {
     if (reducedMotion) return undefined;
-    const timer = setInterval(() => {
-      setActiveStep((prev) => (prev % 3) + 1);
-    }, 3000);
-    return () => clearInterval(timer);
-  }, [reducedMotion]);
+    setActiveStep(1);
+    setDrawnArrows([]);
+    if (!inView) return undefined;
+    let step = 1;
+    let timer;
+    const advance = () => {
+      const from = step;
+      const next = (step % 3) + 1;
+      step = next;
+      // Highlight moves from -> next: draw arrow from -> next once, keep it afterwards
+      setActiveStep(next);
+      setDrawnArrows((prev) => (prev.includes(from) ? prev : [...prev, from]));
+    };
+    // First arrow (1 -> 2) starts almost immediately, then the normal pace
+    const first = setTimeout(() => {
+      advance();
+      timer = setInterval(advance, 3000);
+    }, 800);
+    return () => {
+      clearTimeout(first);
+      clearInterval(timer);
+    };
+  }, [inView, reducedMotion]);
 
   const handleCardClick = (programId) => {
     const program = programs.find((p) => p.id === programId);
@@ -64,6 +106,7 @@ export default function LearningCycle({ onOpenProgram }) {
 
   return (
     <section
+      ref={sectionRef}
       id="learning-cycle"
       className="bg-[#FFFFFF] text-[#231F20] py-16 sm:py-24 px-4 sm:px-6 lg:px-12 relative overflow-x-hidden w-full"
     >
@@ -98,46 +141,40 @@ export default function LearningCycle({ onOpenProgram }) {
               fill="none"
               aria-hidden="true"
             >
-              <defs>
-                <marker
-                  id="gold-arrowhead"
-                  viewBox="0 0 10 10"
-                  refX="8"
-                  refY="5"
-                  markerWidth="8"
-                  markerHeight="8"
-                  orient="auto"
-                >
-                  <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#AD974F" />
-                </marker>
-              </defs>
-
-              {/* Arrow 1: Gardening (1, Upper-Left) -> Self-Defense (2, Upper-Right) */}
-              <path
-                d="M 270 100 C 365 40, 485 40, 574 100"
-                stroke="#AD974F"
-                strokeWidth="1.5"
-                fill="none"
-                markerEnd="url(#gold-arrowhead)"
-              />
-
-              {/* Arrow 2: Self-Defense (2, Upper-Right) -> First Aid (3, Bottom) */}
-              <path
-                d="M 690 220 C 725 325, 665 415, 554 445"
-                stroke="#AD974F"
-                strokeWidth="1.5"
-                fill="none"
-                markerEnd="url(#gold-arrowhead)"
-              />
-
-              {/* Arrow 3: First Aid (3, Bottom) -> Gardening (1, Upper-Left) */}
-              <path
-                d="M 296 445 C 185 415, 125 325, 144 224"
-                stroke="#AD974F"
-                strokeWidth="1.5"
-                fill="none"
-                markerEnd="url(#gold-arrowhead)"
-              />
+              {cycleArrows.map((arrow) => {
+                if (!reducedMotion && !drawnArrows.includes(arrow.from)) return null;
+                const markerId = `gold-arrowhead-${arrow.from}`;
+                return (
+                  <g key={arrow.from}>
+                    <defs>
+                      <marker
+                        id={markerId}
+                        viewBox="0 0 10 10"
+                        refX="8"
+                        refY="5"
+                        markerWidth="8"
+                        markerHeight="8"
+                        orient="auto"
+                      >
+                        <path
+                          className={reducedMotion ? '' : 'arrow-head'}
+                          d="M 0 1.5 L 8 5 L 0 8.5 z"
+                          fill="#AD974F"
+                        />
+                      </marker>
+                    </defs>
+                    <path
+                      className={reducedMotion ? '' : 'arrow-draw'}
+                      d={arrow.d}
+                      pathLength="1"
+                      stroke="#AD974F"
+                      strokeWidth="1.5"
+                      fill="none"
+                      markerEnd={`url(#${markerId})`}
+                    />
+                  </g>
+                );
+              })}
             </svg>
           </div>
 

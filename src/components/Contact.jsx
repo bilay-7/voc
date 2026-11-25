@@ -165,13 +165,13 @@ export default function Contact({ preselectedProgram = '', onConsumedPreselect }
                 </a>
               </div>
 
-              {/* Instagram & Facebook */}
+              {/* Instagram */}
               <div>
                 <span
                   className="block text-[12px] font-normal text-gray-500 mb-1"
                   style={{ fontFamily: "'Outfit', sans-serif" }}
                 >
-                  Instagram &amp; Facebook
+                  Instagram
                 </span>
                 <div className="flex flex-wrap items-center gap-4 pt-0.5">
                   <a

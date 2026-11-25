@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useContent } from '../context/ContentContext';
-import { InstagramIcon, FacebookIcon } from '../lib/icons';
+import { InstagramIcon } from '../lib/icons';
 
 export default function Footer({ onOpenPrivacy }) {
   const { site } = useContent();
@@ -85,27 +85,17 @@ export default function Footer({ onOpenPrivacy }) {
               Follow
             </p>
             
-            {/* Real Instagram & Facebook vector icons */}
+            {/* Instagram */}
             <div className="mt-4 flex items-center gap-3">
               <a
                 href={site.social.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex h-10 w-10 items-center justify-center rounded-[2px] border border-[#AD974F]/50 text-[#AD974F] hover:bg-[#AD974F] hover:text-[#231F20] hover:border-[#AD974F] transition-all duration-200 cursor-pointer shadow-sm"
-                aria-label="Instagram @voiceofchildrenofficial"
+                aria-label="Instagram @voiceofchildreninternational"
                 title="Instagram"
               >
                 <InstagramIcon className="h-5 w-5" />
-              </a>
-              <a
-                href={site.social.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-[2px] border border-[#AD974F]/50 text-[#AD974F] hover:bg-[#AD974F] hover:text-[#231F20] hover:border-[#AD974F] transition-all duration-200 cursor-pointer shadow-sm"
-                aria-label="Facebook @voiceofchildrenofficial"
-                title="Facebook"
-              >
-                <FacebookIcon className="h-5 w-5" />
               </a>
             </div>
 

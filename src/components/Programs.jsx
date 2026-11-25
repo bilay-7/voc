@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useContent } from '../context/ContentContext';
 import { ProgramIcon } from '../lib/icons';
 
 export default function Programs({ onReadMore }) {
   const { programs } = useContent();
+  const gridRef = useRef(null);
+
+  // Reveal cards (staggered) as they scroll into view
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return undefined;
+    const cards = grid.querySelectorAll('[data-reveal]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    cards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [programs.length]);
 
   return (
     <section
@@ -45,11 +66,13 @@ export default function Programs({ onReadMore }) {
         </div>
 
         {/* 12 Elevated Showcase Cards (3 Columns Desktop, 2 Tablet, 1 Mobile) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {programs.map((prog, index) => (
             <article
               key={prog.id}
               onClick={() => onReadMore?.(prog)}
+              data-reveal
+              style={{ '--reveal-delay': `${(index % 3) * 90}ms`, '--idle-delay': `${(index * 0.37).toFixed(2)}s` }}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
@@ -58,12 +81,12 @@ export default function Programs({ onReadMore }) {
                   onReadMore?.(prog);
                 }
               }}
-              className="bg-white rounded-[2px] p-6 border border-gray-200/90 shadow-sm hover:shadow-md hover:border-[#AD974F] transition-all duration-200 group flex flex-col justify-between cursor-pointer text-left"
+              className="reveal-card bg-white rounded-[2px] p-6 border border-gray-200/90 shadow-sm hover:shadow-md hover:border-[#AD974F] transition-all duration-200 group flex flex-col justify-between cursor-pointer text-left"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-[2px] bg-[#AD974F]/10 border border-[#AD974F]/25 flex items-center justify-center text-[#8E793E] group-hover:bg-[#AD974F] group-hover:text-[#231F20] transition-colors">
-                    <ProgramIcon id={prog.id} className="w-5 h-5 stroke-current" />
+                  <div className="prog-icon w-10 h-10 rounded-[2px] bg-[#AD974F]/10 border border-[#AD974F]/25 flex items-center justify-center text-[#8E793E] group-hover:bg-[#AD974F] group-hover:text-[#231F20] transition-colors">
+                    <ProgramIcon id={prog.id} className="prog-icon-svg w-5 h-5 stroke-current" />
                   </div>
                   <span
                     className="text-[11px] font-mono tracking-wider text-gray-400 group-hover:text-[#8E793E] transition-colors uppercase"
@@ -95,7 +118,7 @@ export default function Programs({ onReadMore }) {
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
                 <span>Read program details</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="arrow-nudge w-4 h-4" />
               </div>
             </article>
           ))}

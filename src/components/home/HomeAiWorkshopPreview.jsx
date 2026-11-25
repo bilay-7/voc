@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
+import { drawRef } from '../../lib/drawIcon';
 import { useContent } from '../../context/ContentContext';
 
 export default function HomeAiWorkshopPreview() {
@@ -15,7 +16,7 @@ export default function HomeAiWorkshopPreview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-12 gap-6 w-full pb-6 border-b border-white/15">
           <div className="max-w-xl">
             <div className="flex items-center gap-2 mb-2">
-              <Sparkles className="h-4 w-4 text-[#F5D36B]" />
+              <Sparkles ref={drawRef} className="icon-draw h-4 w-4 text-[#F5D36B]" />
               <span
                 className="text-[11px] sm:text-[12px] font-semibold tracking-[0.18em] uppercase text-[#AD974F]"
                 style={{ fontFamily: "'Outfit', sans-serif" }}
@@ -75,7 +76,7 @@ export default function HomeAiWorkshopPreview() {
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
                 <span>View outcomes</span>
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="arrow-nudge w-3.5 h-3.5" />
               </div>
             </Link>
           ))}
@@ -94,7 +95,7 @@ export default function HomeAiWorkshopPreview() {
             className="btn-primary !h-10 !px-6 text-xs sm:text-sm font-medium inline-flex items-center gap-2 shrink-0"
           >
             <span>Explore All 8 Modules</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="arrow-nudge w-4 h-4" />
           </Link>
         </div>
       </div>

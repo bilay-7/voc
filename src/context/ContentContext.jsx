@@ -41,7 +41,21 @@ export function ContentProvider({ children }) {
         return {
           ...defaultContent,
           ...parsed,
-          site: { ...defaultContent.site, ...(parsed.site || {}) },
+          site: {
+            ...defaultContent.site,
+            ...(parsed.site || {}),
+            // Migrate the old cached Instagram profile + drop Facebook; keep any newer admin edit
+            social: (() => {
+              const savedSocial = parsed.site?.social || {};
+              const isOldProfile = /voiceofchildrenofficial/.test(savedSocial.instagram || '');
+              return {
+                ...defaultContent.site.social,
+                ...(savedSocial.instagram && !isOldProfile
+                  ? { instagram: savedSocial.instagram, instagramHandle: savedSocial.instagramHandle || defaultContent.site.social.instagramHandle }
+                  : {}),
+              };
+            })(),
+          },
           youngGardeners: { ...defaultContent.youngGardeners, ...(parsed.youngGardeners || {}) },
           trafficPark: {
             ...defaultContent.trafficPark,

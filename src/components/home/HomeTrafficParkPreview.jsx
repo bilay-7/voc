@@ -1,23 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Pause, ArrowRight, ShieldCheck, Car, Bike, AlertCircle } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Car, Bike, AlertCircle } from 'lucide-react';
+import { drawRef } from '../../lib/drawIcon';
 import { useContent } from '../../context/ContentContext';
 
 export default function HomeTrafficParkPreview() {
   const { trafficPark } = useContent();
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
 
   return (
     <section className="bg-[#000000] text-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 w-full border-t border-[#AD974F]/20">
@@ -64,15 +53,15 @@ export default function HomeTrafficParkPreview() {
             {/* 3 Quick Pill Badges */}
             <div className="flex flex-wrap gap-2.5 py-1">
               <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-[2px] text-xs text-gray-300">
-                <Car className="w-3.5 h-3.5 text-[#AD974F]" />
+                <Car ref={drawRef} className="icon-draw w-3.5 h-3.5 text-[#AD974F]" />
                 Miniature Roads &amp; Signals
               </span>
               <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-[2px] text-xs text-gray-300">
-                <Bike className="w-3.5 h-3.5 text-[#AD974F]" />
+                <Bike ref={drawRef} className="icon-draw w-3.5 h-3.5 text-[#AD974F]" />
                 Driving &amp; Cycle Navigation
               </span>
               <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 px-3 py-1.5 rounded-[2px] text-xs text-gray-300">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#AD974F]" />
+                <ShieldCheck ref={drawRef} className="icon-draw w-3.5 h-3.5 text-[#AD974F]" />
                 Safety &amp; First Aid Drills
               </span>
             </div>
@@ -83,7 +72,7 @@ export default function HomeTrafficParkPreview() {
                 className="btn-primary !h-11 !px-6 text-[14px] inline-flex items-center gap-2 shadow-md hover:scale-[1.01] transition-transform"
               >
                 <span>Explore Full Project &amp; Proposal</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="arrow-nudge w-4 h-4" />
               </Link>
             </div>
             <p
@@ -110,8 +99,7 @@ export default function HomeTrafficParkPreview() {
 
               {/* Video element */}
               <div
-                className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden cursor-pointer"
-                onClick={togglePlay}
+                className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden"
               >
                 <video
                   ref={videoRef}
@@ -122,31 +110,10 @@ export default function HomeTrafficParkPreview() {
                   loop
                   playsInline
                   preload="auto"
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
                   className="w-full h-full object-cover"
                 >
                   <source src={trafficPark.videoSrc} type="video/mp4" />
                 </video>
-
-                {/* Overlay Play/Pause Button */}
-                <div
-                  className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 flex items-center justify-start z-20 pointer-events-auto"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    type="button"
-                    onClick={togglePlay}
-                    className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#AD974F] text-[#231F20] hover:bg-[#F5D36B] transition-transform active:scale-95 cursor-pointer shadow-lg"
-                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-4 h-4 fill-current" />
-                    ) : (
-                      <Play className="w-4 h-4 fill-current ml-0.5" />
-                    )}
-                  </button>
-                </div>
               </div>
             </div>
           </div>

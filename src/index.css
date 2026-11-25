@@ -295,3 +295,137 @@ textarea.field {
   margin-top: 0.55em;
   flex-shrink: 0;
 }
+
+/* Floating logo animation */
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+.logo-float {
+  animation: logo-float 4.5s ease-in-out infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .logo-float { animation: none; }
+}
+
+/* Learning cycle: arrow draws itself when the highlight moves to the next card */
+@keyframes arrow-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes arrow-head-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.arrow-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: arrow-draw 1s ease-in-out forwards;
+}
+.arrow-head {
+  opacity: 0;
+  animation: arrow-head-in 0.25s ease-out 0.85s forwards;
+}
+
+/* Programs: premium card + icon animations */
+.reveal-card {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.reveal-card.is-in {
+  animation: card-reveal 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms) forwards;
+}
+@keyframes card-reveal {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.prog-icon {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.45s ease, background-color 0.3s ease, color 0.3s ease;
+}
+/* gold shimmer sweep */
+.prog-icon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.75) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.group:hover .prog-icon {
+  transform: translateY(-4px) rotate(-6deg) scale(1.1);
+  box-shadow: 0 10px 20px rgba(173, 151, 79, 0.35);
+}
+.group:hover .prog-icon::after {
+  animation: icon-shimmer 0.9s ease-out;
+}
+.prog-icon-svg {
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.group:hover .prog-icon-svg {
+  animation: icon-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes icon-shimmer {
+  to { transform: translateX(120%); }
+}
+@keyframes icon-pop {
+  0% { transform: scale(1) rotate(0); }
+  40% { transform: scale(1.3) rotate(10deg); }
+  70% { transform: scale(0.94) rotate(-4deg); }
+  100% { transform: scale(1.08) rotate(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-card { opacity: 1; transform: none; }
+  .reveal-card.is-in { animation: none; }
+  .group:hover .prog-icon, .group:hover .prog-icon-svg { animation: none; transform: none; }
+}
+
+/* Programs: always-on idle motion (uses `translate`/`rotate` props so hover `transform` still stacks) */
+.prog-icon::after {
+  animation: icon-shimmer 3.8s ease-in-out calc(var(--idle-delay, 0s) + 1s) infinite;
+}
+.arrow-nudge {
+  animation: arrow-nudge 1.8s ease-in-out var(--idle-delay, 0s) infinite;
+}
+@keyframes arrow-nudge {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 6px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .prog-icon::after, .arrow-nudge { animation: none; }
+}
+
+/* Young Gardeners plant: grows from the ground up, once */
+.plant-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: plant-grow var(--t, 1s) cubic-bezier(0.45, 0, 0.25, 1) var(--d, 0s) forwards;
+}
+@keyframes plant-grow {
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plant-draw { animation: none; stroke-dashoffset: 0; }
+}
+
+/* Icons that draw themselves (stroke by stroke) once scrolled into view */
+.icon-draw * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.icon-draw.is-drawn * {
+  animation: icon-draw 1.3s cubic-bezier(0.45, 0, 0.25, 1) forwards;
+}
+.icon-draw.is-drawn *:nth-child(2) { animation-delay: 0.25s; }
+.icon-draw.is-drawn *:nth-child(3) { animation-delay: 0.5s; }
+.icon-draw.is-drawn *:nth-child(n+4) { animation-delay: 0.75s; }
+@keyframes icon-draw {
+  to { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .icon-draw * { stroke-dashoffset: 0; animation: none !important; }
+}

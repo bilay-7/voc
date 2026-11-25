@@ -1,23 +1,12 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Pause, ArrowRight, ShieldCheck, BookOpen, Users, Compass, AlertTriangle, Car, Bike, Sparkles, HeartHandshake } from 'lucide-react';
+import { ArrowRight, ShieldCheck, BookOpen, Users, Compass, AlertTriangle, Car, Bike, Sparkles, HeartHandshake } from 'lucide-react';
+import { drawRef } from '../lib/drawIcon';
 import { useContent } from '../context/ContentContext';
 
 export default function TrafficPark({ onReadMore }) {
   const { trafficPark } = useContent();
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
 
   const objectiveIcons = [
     BookOpen,
@@ -85,7 +74,7 @@ export default function TrafficPark({ onReadMore }) {
                 className="btn-primary !h-11 !px-6 text-[14px] inline-flex items-center gap-2 shadow-md hover:scale-[1.01] transition-transform"
               >
                 <span>Partner or Enquire</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="arrow-nudge w-4 h-4" />
               </Link>
               {onReadMore && (
                 <button
@@ -113,8 +102,7 @@ export default function TrafficPark({ onReadMore }) {
               </div>
 
               <div
-                className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden cursor-pointer"
-                onClick={togglePlay}
+                className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden"
               >
                 <video
                   ref={videoRef}
@@ -125,30 +113,10 @@ export default function TrafficPark({ onReadMore }) {
                   loop
                   playsInline
                   preload="auto"
-                  onPlay={() => setIsPlaying(true)}
-                  onPause={() => setIsPlaying(false)}
                   className="w-full h-full object-cover"
                 >
                   <source src={trafficPark.videoSrc} type="video/mp4" />
                 </video>
-
-                <div
-                  className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-3 sm:p-4 flex items-center justify-start z-20 pointer-events-auto"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <button
-                    type="button"
-                    onClick={togglePlay}
-                    className="inline-flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#AD974F] text-[#231F20] hover:bg-[#F5D36B] transition-transform active:scale-95 cursor-pointer shadow-lg"
-                    aria-label={isPlaying ? 'Pause video' : 'Play video'}
-                  >
-                    {isPlaying ? (
-                      <Pause className="w-4 h-4 fill-current" />
-                    ) : (
-                      <Play className="w-4 h-4 fill-current ml-0.5" />
-                    )}
-                  </button>
-                </div>
               </div>
             </div>
           </div>
@@ -232,7 +200,7 @@ export default function TrafficPark({ onReadMore }) {
               >
                 <div>
                   <div className="w-10 h-10 rounded-[2px] bg-[#AD974F]/15 border border-[#AD974F]/30 flex items-center justify-center text-[#F5D36B] mb-4">
-                    <Icon className="w-5 h-5" />
+                    <Icon ref={drawRef} className="icon-draw w-5 h-5" />
                   </div>
                   <h3
                     className="text-[19px] text-[#F5D36B] font-medium mb-2"
@@ -279,7 +247,7 @@ export default function TrafficPark({ onReadMore }) {
                 className="bg-[#141213] border border-white/10 p-6 sm:p-7 rounded-[2px] flex items-start gap-4 hover:border-[#AD974F]/60 transition-colors"
               >
                 <div className="w-11 h-11 rounded-[2px] bg-[#AD974F]/10 border border-[#AD974F]/30 flex items-center justify-center text-[#F5D36B] shrink-0 mt-0.5">
-                  <Icon className="w-5 h-5" />
+                  <Icon ref={drawRef} className="icon-draw w-5 h-5" />
                 </div>
                 <div>
                   <h3
@@ -332,7 +300,7 @@ export default function TrafficPark({ onReadMore }) {
                 className="btn-primary !h-12 !px-8 text-[15px] inline-flex items-center gap-2 shadow-lg hover:scale-[1.01] transition-transform"
               >
                 <span>Partner or Enquire for Your School</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="arrow-nudge w-4 h-4" />
               </Link>
               <a
                 href="tel:+923001220208"

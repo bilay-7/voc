@@ -390,22 +390,6 @@ export default function AdminDashboardPage() {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-gray-400 mb-1">
-                    Facebook Page URL
-                  </label>
-                  <input
-                    type="url"
-                    value={siteForm.social.facebook}
-                    onChange={(e) =>
-                      setSiteForm({
-                        ...siteForm,
-                        social: { ...siteForm.social, facebook: e.target.value },
-                      })
-                    }
-                    className="field !bg-[#231F20] !text-white !border-white/20 text-sm"
-                  />
-                </div>
               </div>
 
               <div>

@@ -20,24 +20,24 @@ function PlantArtMobile({ className = '' }) {
       aria-hidden="true"
     >
       {/* Ground line + stem (reference: T-junction at bottom) */}
-      <line x1="28" y1="272" x2="315" y2="272" />
-      <line x1="170" y1="92" x2="170" y2="272" />
+      <line x1="28" y1="272" x2="315" y2="272" className="plant-draw" pathLength="1" style={{ "--d": "0s", "--t": "0.8s" }} />
+      <line x1="170" y1="272" x2="170" y2="92" className="plant-draw" pathLength="1" style={{ "--d": "0.6s", "--t": "1.4s" }} />
 
       {/* Upper left */}
-      <path d="M170 68.6 C147.6 6.2, 96.4 -13.3, 45.2 6.2 C51.6 56.9, 99.6 72.5, 170 68.6 Z" />
-      <path d="M170 68.6 C128.4 41.3, 90 21.8, 45.2 6.2" strokeWidth="1.25" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.3s", "--t": "1.1s" }} d="M170 68.6 C147.6 6.2, 96.4 -13.3, 45.2 6.2 C51.6 56.9, 99.6 72.5, 170 68.6 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.8s", "--t": "1.1s" }} d="M170 68.6 C128.4 41.3, 90 21.8, 45.2 6.2" strokeWidth="1.25" />
 
       {/* Upper right */}
-      <path d="M170 68.6 C192.4 6.2, 243.6 -13.3, 294.8 6.2 C288.4 56.9, 240.4 72.5, 170 68.6 Z" />
-      <path d="M170 68.6 C211.6 41.3, 250 21.8, 294.8 6.2" strokeWidth="1.25" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.3s", "--t": "1.1s" }} d="M170 68.6 C192.4 6.2, 243.6 -13.3, 294.8 6.2 C288.4 56.9, 240.4 72.5, 170 68.6 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.8s", "--t": "1.1s" }} d="M170 68.6 C211.6 41.3, 250 21.8, 294.8 6.2" strokeWidth="1.25" />
 
       {/* Lower left */}
-      <path d="M170 138.8 C147.6 92, 99.6 60.8, 54.8 84.2 C61.2 127.1, 106 142.7, 170 138.8 Z" />
-      <path d="M170 138.8 C128.4 111.5, 93.2 92, 54.8 84.2" strokeWidth="1.25" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "1.7s", "--t": "1.1s" }} d="M170 138.8 C147.6 92, 99.6 60.8, 54.8 84.2 C61.2 127.1, 106 142.7, 170 138.8 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.2s", "--t": "1.1s" }} d="M170 138.8 C128.4 111.5, 93.2 92, 54.8 84.2" strokeWidth="1.25" />
 
       {/* Lower right */}
-      <path d="M170 138.8 C192.4 92, 240.4 60.8, 285.2 84.2 C278.8 127.1, 234 142.7, 170 138.8 Z" />
-      <path d="M170 138.8 C211.6 111.5, 246.8 92, 285.2 84.2" strokeWidth="1.25" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "1.7s", "--t": "1.1s" }} d="M170 138.8 C192.4 92, 240.4 60.8, 285.2 84.2 C278.8 127.1, 234 142.7, 170 138.8 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.2s", "--t": "1.1s" }} d="M170 138.8 C211.6 111.5, 246.8 92, 285.2 84.2" strokeWidth="1.25" />
     </svg>
   );
 }
@@ -54,16 +54,16 @@ function PlantArtDesktop({ className = '' }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <line x1="40" y1="430" x2="460" y2="430" />
-      <line x1="250" y1="120" x2="250" y2="430" />
-      <path d="M 250 120 C 215 40, 135 15, 55 40 C 65 105, 140 125, 250 120 Z" />
-      <path d="M 250 120 C 185 85, 125 60, 55 40" strokeWidth="1.6" />
-      <path d="M 250 120 C 285 40, 365 15, 445 40 C 435 105, 360 125, 250 120 Z" />
-      <path d="M 250 120 C 315 85, 375 60, 445 40" strokeWidth="1.6" />
-      <path d="M 250 210 C 215 150, 140 110, 70 140 C 80 195, 150 215, 250 210 Z" />
-      <path d="M 250 210 C 185 175, 130 150, 70 140" strokeWidth="1.6" />
-      <path d="M 250 210 C 285 150, 360 110, 430 140 C 420 195, 350 215, 250 210 Z" />
-      <path d="M 250 210 C 315 175, 370 150, 430 140" strokeWidth="1.6" />
+      <line x1="40" y1="430" x2="460" y2="430" className="plant-draw" pathLength="1" style={{ "--d": "0s", "--t": "0.8s" }} />
+      <line x1="250" y1="430" x2="250" y2="120" className="plant-draw" pathLength="1" style={{ "--d": "0.6s", "--t": "1.4s" }} />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.3s", "--t": "1.1s" }} d="M 250 120 C 215 40, 135 15, 55 40 C 65 105, 140 125, 250 120 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.8s", "--t": "1.1s" }} d="M 250 120 C 185 85, 125 60, 55 40" strokeWidth="1.6" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.3s", "--t": "1.1s" }} d="M 250 120 C 285 40, 365 15, 445 40 C 435 105, 360 125, 250 120 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.8s", "--t": "1.1s" }} d="M 250 120 C 315 85, 375 60, 445 40" strokeWidth="1.6" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "1.7s", "--t": "1.1s" }} d="M 250 210 C 215 150, 140 110, 70 140 C 80 195, 150 215, 250 210 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.2s", "--t": "1.1s" }} d="M 250 210 C 185 175, 130 150, 70 140" strokeWidth="1.6" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "1.7s", "--t": "1.1s" }} d="M 250 210 C 285 150, 360 110, 430 140 C 420 195, 350 215, 250 210 Z" />
+      <path className="plant-draw" pathLength="1" style={{ "--d": "2.2s", "--t": "1.1s" }} d="M 250 210 C 315 175, 370 150, 430 140" strokeWidth="1.6" />
     </svg>
   );
 }

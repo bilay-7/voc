@@ -6,10 +6,8 @@ export const site = {
   metaTitle: 'Voice of Children | Objective-based STEM & Life Skills Education',
   googleFormUrl: 'https://forms.gle/PLACEHOLDER_YOUNG_GARDENERS',
   social: {
-    instagram: 'https://www.instagram.com/voiceofchildrenofficial/',
-    facebook: 'https://www.facebook.com/voiceofchildrenofficial/',
-    instagramHandle: 'voiceofchildrenofficial',
-    facebookHandle: 'voiceofchildrenofficial',
+    instagram: 'https://www.instagram.com/voiceofchildreninternational',
+    instagramHandle: 'voiceofchildreninternational',
   },
   contact: {
     phone: '0300 1220208',

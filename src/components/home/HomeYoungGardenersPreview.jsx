@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sprout, Award, Users } from 'lucide-react';
+import { drawRef } from '../../lib/drawIcon';
 import { useContent } from '../../context/ContentContext';
 
 export default function HomeYoungGardenersPreview() {
@@ -56,19 +57,19 @@ export default function HomeYoungGardenersPreview() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 pt-2 pb-2">
                 <div className="flex items-center gap-2.5 text-xs text-gray-200">
                   <div className="w-7 h-7 rounded-full bg-[#AD974F]/20 border border-[#AD974F]/40 flex items-center justify-center text-[#F5D36B] shrink-0">
-                    <Sprout className="w-3.5 h-3.5" />
+                    <Sprout ref={drawRef} className="icon-draw w-3.5 h-3.5" />
                   </div>
                   <span style={{ fontFamily: "'Outfit', sans-serif" }}>Botanical Plant Science</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-gray-200">
                   <div className="w-7 h-7 rounded-full bg-[#AD974F]/20 border border-[#AD974F]/40 flex items-center justify-center text-[#F5D36B] shrink-0">
-                    <Users className="w-3.5 h-3.5" />
+                    <Users ref={drawRef} className="icon-draw w-3.5 h-3.5" />
                   </div>
                   <span style={{ fontFamily: "'Outfit', sans-serif" }}>Cohorts for Ages 5–16</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-gray-200">
                   <div className="w-7 h-7 rounded-full bg-[#AD974F]/20 border border-[#AD974F]/40 flex items-center justify-center text-[#F5D36B] shrink-0">
-                    <Award className="w-3.5 h-3.5" />
+                    <Award ref={drawRef} className="icon-draw w-3.5 h-3.5" />
                   </div>
                   <span style={{ fontFamily: "'Outfit', sans-serif" }}>Hands-on STEM Mastery</span>
                 </div>
@@ -81,7 +82,7 @@ export default function HomeYoungGardenersPreview() {
                   className="btn-primary !h-11 !px-7 text-[14.5px] w-full sm:w-auto inline-flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] transition-transform"
                 >
                   <span>Explore Curriculum &amp; Register</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="arrow-nudge w-4 h-4" />
                 </Link>
                 <span
                   className="text-xs text-gray-400 font-light"
@@ -101,7 +102,7 @@ export default function HomeYoungGardenersPreview() {
                 >
                   {/* Inner dark badge */}
                   <div className="w-full h-full rounded-full bg-[#231F20] border border-[#AD974F] flex flex-col items-center justify-center p-3 text-center">
-                    <Sprout className="w-5 h-5 text-[#AD974F] mb-1" />
+                    <Sprout ref={drawRef} className="icon-draw w-5 h-5 text-[#AD974F] mb-1" />
                     <span
                       className="text-[#F5D36B] text-[13.5px] sm:text-[14.5px] font-medium leading-tight"
                       style={{ fontFamily: "'Bodoni Moda', Georgia, serif" }}

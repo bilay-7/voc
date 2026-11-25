@@ -54,16 +54,17 @@ export default function HomeProgramsPreview() {
 
         {/* 6 Elevated Showcase Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-10">
-          {featuredPrograms.map((prog) => (
+          {featuredPrograms.map((prog, index) => (
             <Link
               key={prog.id}
               to="/programs"
+              style={{ '--idle-delay': `${(index * 0.37).toFixed(2)}s` }}
               className="bg-white rounded-[2px] p-6 border border-gray-200/90 shadow-sm hover:shadow-md hover:border-[#AD974F] transition-all duration-200 group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="w-10 h-10 rounded-[2px] bg-[#AD974F]/10 border border-[#AD974F]/25 flex items-center justify-center text-[#8E793E] group-hover:bg-[#AD974F] group-hover:text-[#231F20] transition-colors">
-                    <ProgramIcon id={prog.id} className="w-5 h-5 stroke-current" />
+                  <div className="prog-icon w-10 h-10 rounded-[2px] bg-[#AD974F]/10 border border-[#AD974F]/25 flex items-center justify-center text-[#8E793E] group-hover:bg-[#AD974F] group-hover:text-[#231F20] transition-colors">
+                    <ProgramIcon id={prog.id} className="prog-icon-svg w-5 h-5 stroke-current" />
                   </div>
                   <span
                     className="text-[11px] font-medium tracking-wider text-gray-400 group-hover:text-[#8E793E] transition-colors uppercase"
@@ -91,7 +92,7 @@ export default function HomeProgramsPreview() {
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
                 <span>Read program details</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="arrow-nudge w-4 h-4" />
               </div>
             </Link>
           ))}
@@ -104,7 +105,7 @@ export default function HomeProgramsPreview() {
             className="btn-primary !h-12 !px-8 text-[15px] inline-flex items-center gap-2.5 shadow-md hover:scale-[1.01] transition-transform"
           >
             <span>View All 12 Programs &amp; Curricula</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="arrow-nudge w-4 h-4" />
           </Link>
         </div>
       </div>

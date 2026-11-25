@@ -108,8 +108,8 @@ export default function App() {
       >
         {selectedProgram && (
           <div>
-            <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-[2px] border border-gray-200 text-[#8E793E]">
-              <ProgramIcon name={selectedProgram.icon || selectedProgram.id} className="h-6 w-6 stroke-[#8E793E]" />
+            <div className="prog-icon mb-4 inline-flex h-12 w-12 items-center justify-center rounded-[2px] border border-gray-200 text-[#8E793E]">
+              <ProgramIcon name={selectedProgram.icon || selectedProgram.id} className="prog-icon-svg h-6 w-6 stroke-[#8E793E]" />
             </div>
             <p
               className="text-gray-700 text-[16px] font-light leading-relaxed"

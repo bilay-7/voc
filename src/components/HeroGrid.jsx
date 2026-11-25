@@ -43,7 +43,7 @@ export default function HeroGrid() {
 
           {/* Center Column: Circular Badge with Crisp Official Logo */}
           <div className="order-1 flex justify-center lg:order-2 lg:col-span-6 my-2 sm:my-3 lg:my-0">
-            <div className="relative flex items-center justify-center w-[270px] h-[270px] sm:w-[340px] sm:h-[340px] lg:w-[390px] lg:h-[390px] xl:w-[420px] xl:h-[420px]">
+            <div className="logo-float relative flex items-center justify-center w-[270px] h-[270px] sm:w-[340px] sm:h-[340px] lg:w-[390px] lg:h-[390px] xl:w-[420px] xl:h-[420px]">
               {/* Outer faint gold boundary circle */}
               <div
                 className="absolute inset-0 rounded-full border border-[#AD974F]/35 pointer-events-none"

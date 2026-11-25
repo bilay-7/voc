@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Phone, Mail, ArrowRight, MessageSquare, ShieldCheck } from 'lucide-react';
+import { drawRef } from '../../lib/drawIcon';
 import { useContent } from '../../context/ContentContext';
 
 export default function HomeContactPreview() {
@@ -39,7 +40,7 @@ export default function HomeContactPreview() {
                 className="inline-flex items-center gap-2 border border-[#AD974F]/40 bg-[#AD974F]/10 hover:bg-[#AD974F]/20 text-[#231F20] px-4 py-2.5 rounded-[2px] text-sm font-medium transition-colors"
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
-                <Phone className="w-4 h-4 text-[#8E793E]" />
+                <Phone ref={drawRef} className="icon-draw w-4 h-4 text-[#8E793E]" />
                 <span>Call or WhatsApp: {site.contact.phone}</span>
               </a>
 
@@ -48,7 +49,7 @@ export default function HomeContactPreview() {
                 className="inline-flex items-center gap-2 border border-gray-200 hover:border-gray-300 text-gray-700 px-4 py-2.5 rounded-[2px] text-sm font-light transition-colors"
                 style={{ fontFamily: "'Outfit', sans-serif" }}
               >
-                <Mail className="w-4 h-4 text-[#8E793E]" />
+                <Mail ref={drawRef} className="icon-draw w-4 h-4 text-[#8E793E]" />
                 <span>{site.contact.email}</span>
               </a>
             </div>
@@ -57,7 +58,7 @@ export default function HomeContactPreview() {
           {/* Right Column: Teaser Card to Enrolment Form */}
           <div className="lg:col-span-6 bg-[#EAEAEA]/60 border border-[#231F20]/15 p-6 sm:p-8 rounded-[2px] shadow-sm">
             <div className="flex items-center gap-2.5 mb-3">
-              <MessageSquare className="h-5 w-5 text-[#8E793E]" />
+              <MessageSquare ref={drawRef} className="icon-draw h-5 w-5 text-[#8E793E]" />
               <h3
                 className="text-lg font-semibold text-[#231F20]"
                 style={{ fontFamily: "'Outfit', sans-serif" }}
@@ -75,15 +76,15 @@ export default function HomeContactPreview() {
 
             <div className="space-y-2 mb-6 text-xs text-gray-700">
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[#8E793E] shrink-0" />
+                <ShieldCheck ref={drawRef} className="icon-draw h-4 w-4 text-[#8E793E] shrink-0" />
                 <span>Quick response within 24 hours</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[#8E793E] shrink-0" />
+                <ShieldCheck ref={drawRef} className="icon-draw h-4 w-4 text-[#8E793E] shrink-0" />
                 <span>Flexible batches for Young Gardeners &amp; AI Workshops</span>
               </div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-[#8E793E] shrink-0" />
+                <ShieldCheck ref={drawRef} className="icon-draw h-4 w-4 text-[#8E793E] shrink-0" />
                 <span>School partnerships and customized group sessions</span>
               </div>
             </div>
@@ -93,7 +94,7 @@ export default function HomeContactPreview() {
               className="btn-primary w-full !h-11 text-[14.5px] inline-flex items-center justify-center gap-2 shadow-sm"
             >
               <span>Go to Enrolment Form</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="arrow-nudge w-4 h-4" />
             </Link>
           </div>
         </div>
